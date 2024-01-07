@@ -1,0 +1,37 @@
+a)
+INSERT INTO `employee_job_table` (`employee_id`, `job_id`, `effective_date`) VALUES ('3', '4', '2020-01-01');
+
+
+b)
+
+SELECT employee_profile_table.employee_name, employee_profile_table.employee_no, employee_job_table.effective_date, job_profile_table.job_name
+FROM employee_profile_table
+JOIN employee_job_table
+ON employee_profile_table.employee_id = employee_job_table.employee_id 
+JOIN job_profile_table
+ON employee_job_table.job_id = job_profile_table.job_id 
+
+
+c)
+SELECT a.employee_name, a.employee_no, c.job_name
+FROM employee_profile_table a
+JOIN employee_job_table b
+ON a.employee_id = b.employee_id 
+INNER JOIN (
+	SELECT employee_id, MAX(effective_date) AS MAXDATETIME
+    FROM employee_job_table
+    GROUP BY employee_id
+)groupedtt 
+ON b.employee_id = groupedtt.employee_id
+AND b.effective_date = groupedtt.MAXDATETIME
+JOIN job_profile_table c
+ON b.job_id = c.job_id 
+
+
+d)
+DELETE a,b
+FROM employee_profile_table a 
+INNER JOIN employee_job_table b
+ON a.employee_id = b.employee_id
+WHERE a.employee_no = '1000' AND b.effective_date = '2020-01-01'
+
